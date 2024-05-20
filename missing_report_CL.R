@@ -9,8 +9,9 @@ missing_report <- function(dataframe) {
   }
   
   missing <- data.frame(number = colSums(is.na(dataframe)))
-  missing$percentage <- format(round(missing$number/nrow(dataframe), 2), nsmall = 2)
-  missing <- missing %>% arrange(desc(percentage))
+  missing$percentage <- percent(missing$number/nrow(dataframe), digits = 2)
+  missing$completeness <- if_else(missing$number > 0, "incomplete", "complete")
+  missing <- missing %>% arrange(desc(number))
   print(missing)
   return(missing)
 }
